@@ -4,6 +4,7 @@ import com.kodilla.ebooklibrary.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -14,10 +15,11 @@ class ItemsController {
 
   @GetMapping(path = "/")
   public List<ItemDto> getItems(@RequestParam int userId, @RequestParam int titleId) {
-    return List.of(
-      new ItemDto(1, LocalDate.of(2019, 10, 24), ItemStatus.AVAILABLE),
-      new ItemDto(2, LocalDate.of(2017, 1, 1), ItemStatus.RENTED)
-    );
+    ItemDto[] items = {
+        new ItemDto(1, LocalDate.of(2019, 10, 24), ItemStatus.AVAILABLE),
+        new ItemDto(2, LocalDate.of(2017, 1, 1), ItemStatus.RENTED)
+    };
+    return Arrays.asList(items);
   }
 
   @PostMapping(path = "/")

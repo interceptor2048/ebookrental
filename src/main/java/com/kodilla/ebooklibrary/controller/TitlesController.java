@@ -6,6 +6,7 @@ import com.kodilla.ebooklibrary.domain.TitleDto;
 import com.kodilla.ebooklibrary.domain.UpdateTitleDto;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -15,9 +16,12 @@ import java.util.Random;
 
   @GetMapping(path = "/")
   public List<TitleDto> getTitles(@RequestParam int userId) {
-    return List.of(new TitleDto(1, "Jan Kowalski", "Mój pierwszy eBook", 2020),
+    TitleDto[] titles = {
+        new TitleDto(1, "Jan Kowalski", "Mój pierwszy eBook", 2020),
         new TitleDto(2, "Bryan Carston", "Breaking Bad", 2009),
-        new TitleDto(3, "Jessie Pinkman", "Blue crystal with pepper", 2010));
+        new TitleDto(3, "Jessie Pinkman", "Blue crystal with pepper", 2010)
+    };
+    return Arrays.asList(titles);
   }
 
   @PostMapping(path = "/")
