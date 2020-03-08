@@ -52,4 +52,8 @@ public class TitleMapper {
   public TitleDto mapToTitleDto(Title title) {
     return new TitleDto(title.getId(), title.getAuthor(), title.getTitle(), title.getYear());
   }
+
+  public Title mapToTitleNullable(User user, int titleId) {
+    return titleService.findByIdAndUserNullable(user, titleId);
+  }
 }

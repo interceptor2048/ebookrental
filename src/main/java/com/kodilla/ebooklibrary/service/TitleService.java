@@ -38,4 +38,11 @@ public class TitleService {
   public Title updateTitle(Title title) {
     return titleRepository.save(title);
   }
+
+  public Title findByIdAndUserNullable(User user, int titleId) {
+    List<Title> titles = titleRepository.findByIdAndUser(titleId, user);
+    if (titles.size() == 1)
+      return titles.get(0);
+    return null;
+  }
 }

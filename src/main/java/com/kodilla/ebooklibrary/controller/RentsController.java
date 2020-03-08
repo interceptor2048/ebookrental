@@ -3,43 +3,57 @@ package com.kodilla.ebooklibrary.controller;
 import com.kodilla.ebooklibrary.domain.dto.CreateRentDto;
 import com.kodilla.ebooklibrary.domain.dto.RentDto;
 import com.kodilla.ebooklibrary.domain.dto.UpdateRentDto;
+import com.kodilla.ebooklibrary.domain.entity.Item;
+import com.kodilla.ebooklibrary.domain.entity.Rent;
+import com.kodilla.ebooklibrary.domain.entity.User;
+import com.kodilla.ebooklibrary.mapper.ItemMapper;
+import com.kodilla.ebooklibrary.mapper.RentMapper;
+import com.kodilla.ebooklibrary.mapper.UserMapper;
+import com.kodilla.ebooklibrary.service.RentService;
+import com.kodilla.ebooklibrary.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rents/")
 class RentsController {
-  private Random rnd = new Random();
+  @Autowired
+  private RentMapper rentMapper;
+  @Autowired
+  private RentService rentService;
+  @Autowired
+  private UserMapper userMapper;
+  @Autowired
+  private ItemMapper itemMapper;
+  @Autowired
+  private UserService userService;
 
   @GetMapping(path = "/")
   public List<RentDto> getRents(@RequestParam int userId, @RequestParam int itemId) {
-    RentDto[] rents = {
-        new RentDto(1, "Jan Kowalski", LocalDate.now(), LocalDate.now().plusDays(5)),
-        new RentDto(2, "Tomasz Nowak", LocalDate.now().minusDays(2), LocalDate.now().plusDays(3))
-    };
-    return Arrays.asList(rents);
+    User user = userMapper.mapToUserNullable(userId);
+    Item item = itemMapper.mapToItemNullable(user, itemId);
+    return rentMapper.mapToRentDtoList(rentService.getRents(user, item));
   }
 
   @PostMapping(path = "/")
-  public int createRent(@RequestBody CreateRentDto createRentDto) {
-    return rnd.nextInt(50) + 1;
+  public long createRent(@RequestBody CreateRentDto createRentDto) throws Exception {
+    return rentService.createRent(rentMapper.mapToRent(createRentDto));
   }
 
   @PutMapping(path = "/")
-  public RentDto updateRent(@RequestBody UpdateRentDto updateRentDto) {
-    return new RentDto(
-        updateRentDto.getId(),
-        updateRentDto.getCustomerName(),
-        updateRentDto.getRentDate(),
-        updateRentDto.getExpirationDate());
+  public RentDto updateRent(@RequestBody UpdateRentDto updateRentDto) throws Exception {
+    Rent rent = rentMapper.mapToRent(updateRentDto);
+    return rentMapper.mapToRentDto(rentService.updateRent(rent));
   }
 
   @DeleteMapping(path = "/")
-  public boolean deleteRent(@RequestParam int userId, @RequestParam int id) {
-    return rnd.nextBoolean();
+  public boolean deleteRent(@RequestParam int userId, @RequestParam int id) throws Exception {
+    Optional<User> user = userService.getUserById(userId);
+    if (!user.isPresent())
+      throw new Exception("User " + userId + " doesn't exist.");
+    return rentService.deleteRent(user.get(), id);
   }
 }

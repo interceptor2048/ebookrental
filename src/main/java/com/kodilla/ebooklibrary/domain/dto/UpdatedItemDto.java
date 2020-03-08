@@ -10,6 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 public class UpdatedItemDto {
-  private int id;
+  private long id;
   private LocalDate purchaseDate;
 }
