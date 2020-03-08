@@ -1,6 +1,6 @@
 package com.kodilla.ebooklibrary.controller;
 
-import com.kodilla.ebooklibrary.domain.*;
+import com.kodilla.ebooklibrary.domain.dto.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;

@@ -1,45 +1,43 @@
 package com.kodilla.ebooklibrary.controller;
 
-import com.kodilla.ebooklibrary.domain.CreateTitleDto;
-import com.kodilla.ebooklibrary.domain.DeleteDto;
-import com.kodilla.ebooklibrary.domain.TitleDto;
-import com.kodilla.ebooklibrary.domain.UpdateTitleDto;
+import com.kodilla.ebooklibrary.domain.dto.CreateTitleDto;
+import com.kodilla.ebooklibrary.domain.dto.TitleDto;
+import com.kodilla.ebooklibrary.domain.dto.UpdateTitleDto;
+import com.kodilla.ebooklibrary.mapper.TitleMapper;
+import com.kodilla.ebooklibrary.mapper.UserMapper;
+import com.kodilla.ebooklibrary.service.TitleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/titles/") class TitlesController {
-  private Random rnd = new Random();
+  @Autowired
+  private TitleMapper titleMapper;
+  @Autowired
+  private TitleService titleService;
+  @Autowired
+  private UserMapper userMapper;
 
   @GetMapping(path = "/")
-  public List<TitleDto> getTitles(@RequestParam int userId) {
-    TitleDto[] titles = {
-        new TitleDto(1, "Jan Kowalski", "Mój pierwszy eBook", 2020),
-        new TitleDto(2, "Bryan Carston", "Breaking Bad", 2009),
-        new TitleDto(3, "Jessie Pinkman", "Blue crystal with pepper", 2010)
-    };
-    return Arrays.asList(titles);
+  public List<TitleDto> getTitles(@RequestParam long userId) {
+    return titleMapper.mapToTitleDtoList(
+        titleService.getTitles(userMapper.mapToUserNullable(userId)));
   }
 
   @PostMapping(path = "/")
-  public int createTitle(@RequestBody CreateTitleDto createTitleDto) {
-    return rnd.nextInt(50) + 1;
+  public long createTitle(@RequestBody CreateTitleDto createTitleDto) throws Exception {
+    return titleService.createTitle(titleMapper.mapToTitle(createTitleDto)).getId();
   }
 
   @PutMapping(path = "/")
-  public TitleDto updateTitle(@RequestBody UpdateTitleDto updateTitleDto) {
-    return new TitleDto(
-        updateTitleDto.getId(),
-        updateTitleDto.getAuthor(),
-        updateTitleDto.getTitle(),
-        updateTitleDto.getYear());
+  public TitleDto updateTitle(@RequestBody UpdateTitleDto updateTitleDto) throws Exception {
+    return titleMapper.mapToTitleDto(titleService.updateTitle(titleMapper.mapToTitle(updateTitleDto)));
   }
 
   @DeleteMapping(path = "/")
-  public boolean deleteTitle(@RequestBody DeleteDto deleteDto) {
-    return rnd.nextBoolean();
+  public boolean deleteTitle(@RequestParam long userId, @RequestParam long id) {
+    return titleService.deleteTitle(userMapper.mapToUserNullable(userId), id);
   }
 }

@@ -1,4 +1,4 @@
-package com.kodilla.ebooklibrary.domain;
+package com.kodilla.ebooklibrary.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class RentDto {
+public class UpdatedItemDto {
   private int id;
-  private String customerName;
-  private LocalDate rentDate;
-  private LocalDate expirationDate;
+  private LocalDate purchaseDate;
 }

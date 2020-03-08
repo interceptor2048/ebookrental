@@ -1,4 +1,4 @@
-package com.kodilla.ebooklibrary.domain;
+package com.kodilla.ebooklibrary.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class CreateItemDto {
-  private int userId;
-  private int titleId;
+public class ItemDto {
+  private int id;
   private LocalDate purchaseDate;
+  private ItemStatus status;
 }

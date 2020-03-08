@@ -1,8 +1,8 @@
 package com.kodilla.ebooklibrary.controller;
 
-import com.kodilla.ebooklibrary.domain.CreateRentDto;
-import com.kodilla.ebooklibrary.domain.RentDto;
-import com.kodilla.ebooklibrary.domain.UpdateRentDto;
+import com.kodilla.ebooklibrary.domain.dto.CreateRentDto;
+import com.kodilla.ebooklibrary.domain.dto.RentDto;
+import com.kodilla.ebooklibrary.domain.dto.UpdateRentDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;

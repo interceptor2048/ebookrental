@@ -1,4 +1,4 @@
-package com.kodilla.ebooklibrary.domain;
+package com.kodilla.ebooklibrary.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
